@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Behn</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(#ffe6f0, #fff0f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      background: white;
+      border: 3px solid black;
+      border-radius: 30px 0 30px 0;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      overflow: hidden;
+      min-height: 200px;
+      animation: growHeight 1s forwards;
+    }
+    @keyframes growHeight {
+      from { height: 0; }
+      to { height: auto; }
+    }
+    .hidden { display: none; }
+    .gift-box {
+      width: 100px;
+      height: 100px;
+      margin: 20px auto;
+      background: url('https://img.icons8.com/?size=100&id=113082&format=png&color=000000') no-repeat center/cover;
+    }
+    .cakes {
+      margin-top: 20px;
+    }
+    .cake {
+      width: 50px;
+      height: 50px;
+      background: url('https://img.icons8.com/?size=100&id=SUJRRefaeLqx&format=png&color=000000') no-repeat center/cover;
+      display: inline-block;
+      margin: 10px;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #ff1493;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 3px solid black;
+      padding: 20px;
+      z-index: 999;
+      border-radius: 30px 0 30px 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 998;
+    }
+    .typing {
+      display: inline-block;
+      border-right: 2px solid black;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3s steps(40, end), blink .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: black }
+    }
+    .sticky-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+      position: static;
+    }
+    .sticky-btns.hidden {
+      display: none;
+    }
+    .typing-li {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid black;
+      width: 0;
+      animation: typing-li 1.5s steps(40, end) forwards, blink .75s step-end infinite;
+    }
+    @keyframes typing-li {
+      from { width: 0 }
+      to { width: 100% }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="step1">
+      <div class="gift-box"></div>
+      <div class="sticky-btns">
+        <button onclick="showStep(2)">Open Gift</button>
+      </div>
+    </div>
+
+    <div id="step2" class="hidden">
+      <p class="typing">Click all below cakes!</p>
+      <div class="cakes" id="cakes">
+        <div class="cake" onclick="removeCake(this)"></div>
+        <div class="cake" onclick="removeCake(this)"></div>
+        <div class="cake" onclick="removeCake(this)"></div>
+        <div class="cake" onclick="removeCake(this)"></div>
+        <div class="cake" onclick="removeCake(this)"></div>
+      </div>
+    </div>
+
+    <div id="step3" class="hidden">
+      <p class="typing">You know sister what today is?</p><br>
+      <p class="typing">It's 16th July — YOUR BIRTHDAY! 🎉</p>
+      <div class="sticky-btns">
+      <button onclick="showStep(4)">Click to Continue</button>
+      </div>
+    </div>
+
+    <div id="step4" class="hidden">
+      <p>Best sister & a Brilliant MATHEMATICIAN:</p>
+      <ul style="text-align: left">
+        <li class="typing-li">Your happiness = (dreams^2 + love) / stress</li>
+        <li class="typing-li">Your smile > infinity</li>
+        <li class="typing-li">Success ∝ hard work</li>
+        <li class="typing-li">You’re the constant in my life 🧡</li>
+        <li class="typing-li">Life without you = undefined</li>
+        <li class="typing-li">You’re the solution to every problem</li>
+        <li class="typing-li">You're like a perfect equation: balanced and beautiful</li>
+        <li class="typing-li">You're the integral part of my life ∫❤️dx</li>
+        <li class="typing-li">May your joy be like a convergent series: infinite but manageable</li>
+      </ul>
+      <div class="sticky-btns">
+        <button onclick="showStep(5)">Click to Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div id="step5" class="hidden">
+      <p class="typing">Ab batao, koi gift chahiye?</p>
+      <div class="sticky-btns">
+        <button onclick="giftAnswer('yes')">Yes</button>
+        <button onclick="giftAnswer('no')">No</button>
+      </div>
+    </div>
+
+    <!-- Popup 1 for Step 5 -->
+    <div id="popup1" class="hidden">
+      <div class="overlay" onclick="closePopup1()"></div>
+      <div class="popup" id="popup-content1">
+        <p>Ab bataoo k koi gift chahiye?</p>
+        <div class="sticky-btns">
+          <button onclick="popup1Yes()">Yes</button>
+          <button onclick="popup1No()">No</button>
+        </div>
+        <p id="popup-message1"></p>
+      </div>
+    </div>
+
+    <!-- Popup 2 for Step 7 -->
+    <div id="popup2" class="hidden">
+      <div class="overlay" onclick="closePopup2()"></div>
+      <div class="popup" id="popup-content2">
+        <p>Kaisa laga mera Developer style? 😎</p>
+        <div class="sticky-btns">
+          <button onclick="popup2Yes()">Acha hy</button>
+          <button onclick="popup2No()">Nhi Acha</button>
+        </div>
+        <p id="popup-message2"></p>
+      </div>
+    </div>
+
+    <!-- Step 6 (unchanged) -->
+    <div id="step6" class="hidden">
+      <p class="typing">Once Again, Happy Birthday Behnaaa! 🎂💐</p><br>
+      <button onclick="showStep(7)">Continue</button>
+    </div>
+
+    <!-- Step 7 -->
+    <div id="step7" class="hidden">
+      <p class="typing">To ab btao, kaisa laga mera Developer style?</p>
+      <div class="sticky-btns">
+        <button onclick="signatureAnswer('yes')">Acha Hy</button>
+        <button onclick="signatureAnswer('no')">Nhi Acha</button>
+      </div>
+    </div>
+
+    <!-- Simple Popup -->
+    <div id="simple-popup" class="hidden">
+      <div class="overlay"></div>
+      <div class="popup" id="simple-popup-content">
+        <p id="simple-popup-message"></p>
+      </div>
+    </div>
+
+    <div id="step8" class="hidden">
+      <p class="typing">Stay Happy! 🎂💐</p><br>
+      <p class="typing">Stay Pure! 🎂💐</p><br>
+      <p class="typing">Stay Blessed! 🎂💐</p><br>
+      <p class="typing">Stay Successfull! 🎂💐</p><br>
+      <button onclick="exitPage()">Exit</button>
+    </div>
+
+  </div>
+
+  <script>
+let cakesClicked = 0;
+
+function showStep(step) {
+  document.querySelectorAll('div[id^="step"]').forEach(div => div.classList.add('hidden'));
+  document.querySelectorAll('.sticky-btns').forEach(div => div.classList.add('hidden'));
+  const stepDiv = document.getElementById('step' + step);
+  stepDiv.classList.remove('hidden');
+  const stickyBtns = stepDiv.querySelector('.sticky-btns');
+  if (stickyBtns) stickyBtns.classList.remove('hidden');
+
+  // Typing animation for list items in step 4
+  if (step === 4) {
+    const lis = stepDiv.querySelectorAll('.typing-li');
+    lis.forEach(li => {
+      li.style.animation = 'none';
+      li.style.width = '0';
+      li.style.borderRight = '2px solid black';
+      li.style.visibility = 'hidden';
+    });
+    let i = 0;
+    function animateLi() {
+      if (i < lis.length) {
+        lis[i].style.visibility = 'visible';
+        lis[i].style.animation = '';
+        setTimeout(animateLi, 1600);
+        i++;
+      }
+    }
+    animateLi();
+  }
+}
+
+function removeCake(cakeElement) {
+  cakeElement.remove();
+  cakesClicked++;
+  if (cakesClicked === 5) {
+    showStep(3);
+  }
+}
+
+function showGiftPopup1() {
+  document.getElementById('popup-message1').innerText = "";
+  document.getElementById('popup1').classList.remove('hidden');
+}
+function popup1Yes() {
+  document.getElementById('popup-message1').innerText = "Bhen pehly party to dy!";
+  setTimeout(() => {
+    closePopup1();
+    showStep(6);
+  }, 4000);
+}
+function popup1No() {
+  document.getElementById('popup-message1').innerText = "Bhen party to tujy dyni pary gi, gift nah ly k myray paisay bacha liyay, thank God!";
+  setTimeout(() => {
+    closePopup1();
+    showStep(6);
+  }, 7000);
+}
+function closePopup1() {
+  document.getElementById('popup1').classList.add('hidden');
+}
+
+function showGiftPopup2() {
+  document.getElementById('popup-message2').innerText = "";
+  document.getElementById('popup2').classList.remove('hidden');
+}
+function popup2Yes() {
+  document.getElementById('popup-message2').innerText = "Dekha! Mujhe pata tha k acha lgy ga... tum manti ho na Developer 😉";
+  setTimeout(closePopup2, 7000);
+}
+function popup2No() {
+  document.getElementById('popup-message2').innerText = "Aisa to naah bholoo naah 😭 Bhot mehnat ki hy !!s";
+  setTimeout(closePopup2, 7000);
+}
+function closePopup2() {
+  document.getElementById('popup2').classList.add('hidden'); document.getElementById('popup2').classList.add('hidden');
+}
+
+function showSimplePopup(msg, callback, delay = 7000) {
+  document.getElementById('simple-popup-message').innerText = msg;
+  document.getElementById('simple-popup').classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('simple-popup').classList.add('hidden');
+    if (callback) callback();
+  }, delay);
+}
+
+// Step 5 logic
+function giftAnswer(ans) {
+  if (ans === 'yes') {
+    showSimplePopup("Bhen pehly party to dy!", () => showStep(6));
+  } else {
+    showSimplePopup("Bhen party to tujy dyni pare gi, gift nah ly k myray paisay bacha liyay, thank God!", () => showStep(6), 7000);
+  }
+}
+
+// Step 7 logic
+function signatureAnswer(ans) {
+  if (ans === 'yes') {
+    showSimplePopup("Dekha! Mujhe pata tha k acha lgy ga... tum manti ho na Developer 😉", () => showStep(8));
+  } else {
+    showSimplePopup("Aisa to naah bholoo naah 😭 Bhot mehnat ki hy !! ....", () => showStep(7), 7000);
+  }
+}
+
+function exitPage() {
+  window.close();
+  setTimeout(() => {
+    alert("Thank you! You can now close this tab.");
+  }, 3000);
+}
+</script>
+</body>
+</html>
+
