@@ -118,34 +118,39 @@
 </head>
 <body>
   <div class="container">
-    <div id="step1">
-      <div class="gift-box"></div>
-      <div class="sticky-btns">
+    <div id="input-popup">
+      <p>Enter your name:</p>
+      <input type="text" id="user-name" placeholder="Your name here" />
+      <p>Enter your Date of Birth:</p>
+      <input type="text" id="dob" placeholder="e.g., 16th July" />
+      <button onclick="saveUserData()">Submit</button>
+    </div>
+
+    <div id="main-content" class="hidden">
+      <div id="step1">
+        <div class="gift-box"></div>
         <button onclick="showStep(2)">Open Gift</button>
       </div>
-    </div>
 
-    <div id="step2" class="hidden">
-      <p class="typing">Click all below cakes!</p>
-      <div class="cakes" id="cakes">
-        <div class="cake" onclick="removeCake(this)"></div>
-        <div class="cake" onclick="removeCake(this)"></div>
-        <div class="cake" onclick="removeCake(this)"></div>
-        <div class="cake" onclick="removeCake(this)"></div>
-        <div class="cake" onclick="removeCake(this)"></div>
+      <div id="step2" class="hidden">
+        <p class="typing"><span id="username1"></span>! Click all below cakes!</p>
+        <div class="cakes" id="cakes">
+          <div class="cake" onclick="removeCake(this)"></div>
+          <div class="cake" onclick="removeCake(this)"></div>
+          <div class="cake" onclick="removeCake(this)"></div>
+          <div class="cake" onclick="removeCake(this)"></div>
+          <div class="cake" onclick="removeCake(this)"></div>
+        </div>
       </div>
-    </div>
 
-    <div id="step3" class="hidden">
-      <p class="typing">You know sister what today is?</p><br>
-      <p class="typing">It's 16th July — YOUR BIRTHDAY! 🎉</p>
-      <div class="sticky-btns">
-      <button onclick="showStep(4)">Click to Continue</button>
+      <div id="step3" class="hidden">
+        <p class="typing">You know <span id="username1"></span>, what today is?</p>
+        <p class="typing">It's <span id="user-dob"></span> — YOUR BIRTHDAY! 🎉</p>
+        <button onclick="showStep(4)">Click to Continue</button>
       </div>
-    </div>
 
     <div id="step4" class="hidden">
-      <p>Best sister & a Brilliant MATHEMATICIAN:</p>
+      <p><span id="username1"></span> is Best & a Brilliant MATHEMATICIAN:</p>
       <ul style="text-align: left">
         <li class="typing-li">Your happiness = (dreams^2 + love) / stress</li>
         <li class="typing-li">Your smile > infinity</li>
@@ -199,7 +204,7 @@
 
     <!-- Step 6 (unchanged) -->
     <div id="step6" class="hidden">
-      <p class="typing">Once Again, Happy Birthday Behnaaa! 🎂💐</p><br>
+      <p class="typing">Once Again, Happy Birthday <span id="username1"></span>! 🎂💐</p><br>
       <button onclick="showStep(7)">Continue</button>
     </div>
 
@@ -232,6 +237,40 @@
 
   <script>
 let cakesClicked = 0;
+
+let userName = '';
+    let userDob = '';
+    
+    function saveUserData() {
+      userName = document.getElementById('user-name').value || 'Friend';
+      userDob = document.getElementById('dob').value || '16th July';
+      document.getElementById('input-popup').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+      personalize();
+    }
+
+    function personalize() {
+      document.querySelectorAll('#username1').forEach(el => el.innerText = userName);
+      document.querySelectorAll('#user-dob').forEach(el => el.innerText = userDob);
+
+      // Replace in body text (for future use if needed)
+      document.body.innerHTML = document.body.innerHTML
+        .replace(/\b(sister|behn|behen|Behnaaa)\b/gi, userName)
+        .replace(/\b16th July\b/g, userDob);
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('div[id^="step"]').forEach(div => div.classList.add('hidden'));
+      document.getElementById('step' + step).classList.remove('hidden');
+    }
+
+    function removeCake(cakeElement) {
+      cakeElement.remove();
+      cakesClicked++;
+      if (cakesClicked === 5) {
+        showStep(3);
+      }
+    }
 
 function showStep(step) {
   document.querySelectorAll('div[id^="step"]').forEach(div => div.classList.add('hidden'));
@@ -276,14 +315,14 @@ function showGiftPopup1() {
   document.getElementById('popup1').classList.remove('hidden');
 }
 function popup1Yes() {
-  document.getElementById('popup-message1').innerText = "Bhen pehly party to dy!";
+  document.getElementById('popup-message1').innerText = userName + " pehly party to dy!";
   setTimeout(() => {
     closePopup1();
     showStep(6);
   }, 4000);
 }
 function popup1No() {
-  document.getElementById('popup-message1').innerText = "Bhen party to tujy dyni pary gi, gift nah ly k myray paisay bacha liyay, thank God!";
+  document.getElementById('popup-message1').innerText = userName + " party to tujy dyni pary gi, gift nah ly k myray paisay bacha liyay, thank God!";
   setTimeout(() => {
     closePopup1();
     showStep(6);
@@ -298,7 +337,7 @@ function showGiftPopup2() {
   document.getElementById('popup2').classList.remove('hidden');
 }
 function popup2Yes() {
-  document.getElementById('popup-message2').innerText = "Dekha! Mujhe pata tha k acha lgy ga... tum manti ho na Developer 😉";
+  document.getElementById('popup-message2').innerText = "Dekha! Mujhe pata tha k acha lgy ga... to phir my ho na Developer 😉";
   setTimeout(closePopup2, 7000);
 }
 function popup2No() {
@@ -321,16 +360,16 @@ function showSimplePopup(msg, callback, delay = 7000) {
 // Step 5 logic
 function giftAnswer(ans) {
   if (ans === 'yes') {
-    showSimplePopup("Bhen pehly party to dy!", () => showStep(6));
+    showSimplePopup(userName + " pehly party to dy!", () => showStep(6));
   } else {
-    showSimplePopup("Bhen party to tujy dyni pare gi, gift nah ly k myray paisay bacha liyay, thank God!", () => showStep(6), 7000);
+    showSimplePopup(userName + " party to tujy dyni pare gi, gift nah ly k myray paisay bacha liyay😉, thank God!", () => showStep(6), 7000);
   }
 }
 
 // Step 7 logic
 function signatureAnswer(ans) {
   if (ans === 'yes') {
-    showSimplePopup("Dekha! Mujhe pata tha k acha lgy ga... tum manti ho na Developer 😉", () => showStep(8));
+    showSimplePopup("Dekha! Mujhe pata tha k acha lgy ga... to phir my ho na Developer 😉", () => showStep(8));
   } else {
     showSimplePopup("Aisa to naah bholoo naah 😭 Bhot mehnat ki hy !! ....", () => showStep(7), 7000);
   }
